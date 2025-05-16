@@ -1,10 +1,14 @@
-import telebot
+from flask import Flask, jsonify, request
 
-TOKEN = '7703344167:AAEzldfaPel398R71gMKcb9E1qVinK7uIe4'
-bot = telebot.TeleBot(TOKEN)
+app = Flask(__name__)
 
-@bot.message_handler(commands=['start'])
-def send_welcome(message):
-    bot.reply_to(message, "مرحباً! كيف يمكنني مساعدتك؟")
+@app.route('/')
+def home():
+    return jsonify({'message': 'مرحباً بك في Vercel Flask API'})
 
-bot.polling()
+@app.route('/hello')
+def hello():
+    name = request.args.get('name', 'زائر')
+    return jsonify({'message': f'مرحباً، {name}!'})
+
+# لا تضف app.run() عند النشر على Vercel
